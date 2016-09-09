@@ -7,9 +7,6 @@ client = pymongo.MongoClient(uri)
 database = client['fullstack']
 collection = database['students']
 
-students = collection.find({})
+students = [student['mark'] for student in collection.find({})]
 
 print(students)
-
-for student in students:
-    print(student)
