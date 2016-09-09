@@ -13,17 +13,21 @@ class Blog(object):
         self.author = author
         self.title = title
         self.description = description
-        self.id = uuid.uuid4().hex if id is None else id()
+        self.id = uuid.uuid4().hex if id is None else id
 
     def new_post(self):
         title = input("Enter post title: ")
         content = input("Enter post content: ")
         date = input("Enter post date, or leave blank for today (DDMMYYYY): ")
+        if date == "":
+            date = datetime.datetime.utcnow()
+        else:
+            date = datetime.datetime.strptime(date, "%d%m%Y")
         post = Post(blog_id=self.id,
-                    title=title,
-                    content=content,
-                    author =self.author,
-                    date=datetime.datetime.strptime(date, "%d%m%Y"))
+               title=title,
+               content=content,
+               author =self.author,
+               date=date)
         post.save_to_mongo()
 
     def get_posts(self):
@@ -42,7 +46,7 @@ class Blog(object):
         }
 
     @classmethod
-    def get_from_mongo(cls, id):
+    def from_mongo(cls, id):
         blog_data = Database.find_one(collection='blogs',
                                       query={'id': id})
         return cls(author=blog_data['author'],
