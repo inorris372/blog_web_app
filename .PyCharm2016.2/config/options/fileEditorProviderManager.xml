@@ -1,0 +1,9 @@
+<application>
+  <component name="FileEditorProviderManager">
+    <option name="selectedProviders">
+      <map>
+        <entry key="split-provider[text-editor;MarkdownPreviewEditor],MarkdownFxPreviewEditor" value="split-provider[text-editor;MarkdownPreviewEditor]" />
+      </map>
+    </option>
+  </component>
+</application>
