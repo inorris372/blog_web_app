@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+    <form id="home-form" action="return submitForm()" method="post">
+        <input type="submit" name="operation" onclick="document.pressed=this.value" value = "Login">
+        <input type="submit" name="operation" onclick="document.pressed=this.value" value = "Register">
+    </form>
+{% endblock %}

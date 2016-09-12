@@ -1,0 +1,12 @@
+<script type="text/javascript">
+    function OnSubmitForm() {
+        if(document.pressed == 'Login') {
+            document.myform.action ="login.html";
+        }
+        else
+        if(document.pressed == 'Register') {
+        document.myform.action ="register.html";
+        }
+        return true;
+    }
+    </script>

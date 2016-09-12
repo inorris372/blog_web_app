@@ -2,7 +2,7 @@ import datetime
 import uuid
 
 from src.common.database import Database
-from src.models.blog import Blog
+import src.models.blog
 
 __author__ = 'Ian'
 
@@ -20,9 +20,9 @@ class Post(object):
     def save_to_mongo(self):
         Database.insert(collection='posts',
                         data=self.json())
-
-    def new_post(self, blog_id, title, content, date=datetime.datetime.utcnow()):
-        blog = Blog.from_mongo(blog_id)
+    @staticmethod
+    def new_post(blog_id, title, content, date=datetime.datetime.utcnow()):
+        blog = src.models.blog.Blog.from_mongo(blog_id)
         blog.new_post(title=title,
                       content=content,
                       date=date)
