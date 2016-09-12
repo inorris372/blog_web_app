@@ -25,6 +25,14 @@ class User(object):
             return cls(**data)
 
     @staticmethod
+    def has_registered(email):
+        user = User.get_by_email(email)
+        if user is not None:
+            return True
+        return False
+
+
+    @staticmethod
     def login_valid(email, password):
         # Check whether a user's email matches the password they sent us
         user = User.get_by_email(email)

@@ -38,10 +38,6 @@ def login_user():
         User.login(email)
     else:
         session['email'] = None
-        login_template()
-        print("The email address that you entered was either invalid"
-              "or has not yet been registered with the Blogosphere.")
-
     return render_template('profile.html', email=session['email'])
 
 
@@ -50,9 +46,24 @@ def register_user():
     email = request.form['email']
     password = request.form['password']
 
-    User.register(email, password)
+    if User.has_registered(email):
+        print("You already have an account! Please enter your password.")
+    else:
+        User.register(email, password)
 
     return render_template('profile.html', email=session['email'])
+
+
+@app.route('/blogs/<string:user_id>')
+@app.route('/blogs/')
+def user_blogs(user_id=None):
+    if user_id is not None:
+        user = User.get_by_id(user_id)
+    else:
+        user = User.get_by_email(session['email'])
+    blogs = user.get_blogs()
+
+    return render_template('user_blogs.html', blogs=blogs, email=user.email)
 
 
 if __name__ == '__main__':
