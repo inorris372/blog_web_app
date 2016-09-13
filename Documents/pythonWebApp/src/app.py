@@ -50,7 +50,6 @@ def login_user():
         return render_template('login.html', email=session['email'])
 
 
-
 @app.route('/auth/register', methods=['POST'])
 def register_user():
     email = request.form['email']
@@ -62,7 +61,6 @@ def register_user():
     else:
         User.register(email, password)
         return render_template('profile.html', email=session['email'])
-
 
 
 @app.route('/blogs/<string:user_id>', methods=['GET', 'POST'])
@@ -77,7 +75,7 @@ def user_blogs(user_id=None):
     return render_template('user_blogs.html', blogs=blogs, email=user.email)
 
 
-@app.route('/blogs/new', methods=['GET','POST'])
+@app.route('/blogs/new', methods=['GET', 'POST'])
 def create_new_blog():
     if request.method == "GET":
         return render_template('new_blog.html')
@@ -97,7 +95,7 @@ def blog_posts(blog_id):
     blog = Blog.from_mongo(blog_id)
     posts = blog.get_posts()
 
-    return render_template('posts.html', posts=posts, blog_title = blog.title)
+    return render_template('posts.html', posts=posts, blog_title=blog.title)
 
 
 if __name__ == '__main__':
