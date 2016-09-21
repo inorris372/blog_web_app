@@ -1,9 +1,7 @@
-from flask import make_response
-
 from src.common.database import Database
 from src.models.blog import Blog
 from src.models.user import User
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, make_response
 
 __author__ = 'Ian'
 
@@ -84,10 +82,10 @@ def create_new_blog():
         description = request.form['description']
         user = User.get_by_email(session['email'])
 
-        new_blog = Blog(user.email, title, description, user._id)
+        new_blog = Blog(user.email, title, description, user.identity)
         new_blog.save_to_mongo()
 
-        return make_response(user_blogs(user._id))
+        return make_response(user_blogs(user.identity))
 
 
 @app.route('/posts/<string:blog_id>', methods=['GET', 'POST'])

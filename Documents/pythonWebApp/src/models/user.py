@@ -7,10 +7,10 @@ __author__ = 'Ian'
 
 
 class User(object):
-    def __init__(self, email, password, _id=None):
+    def __init__(self, email, password, identity=None):
         self.email = email
         self.password = password
-        self._id = uuid.uuid4().hex if _id is None else _id
+        self.identity = uuid.uuid4().hex if identity is None else identity
 
     @classmethod
     def get_by_email(cls, email):
@@ -19,8 +19,8 @@ class User(object):
             return cls(**data)
 
     @classmethod
-    def get_by_id(cls, _id):
-        data = Database.find_one("users", {"_id": _id})
+    def get_by_id(cls, identity):
+        data = Database.find_one("users", {"identity": identity})
         if data is not None:
             return cls(**data)
 
@@ -31,13 +31,11 @@ class User(object):
             return True
         return False
 
-
     @staticmethod
     def login_valid(email, password):
         # Check whether a user's email matches the password they sent us
         user = User.get_by_email(email)
         if user is not None:
-            #Check the password
             return user.password == password
         return False
 
@@ -62,21 +60,21 @@ class User(object):
         session['email'] = None
 
     def get_blogs(self):
-        return Blog.find_by_author_id(self._id)
+        return Blog.find_by_author_id(self.identity)
 
     def new_blog(self, title, description):
         # author, title, description, author_id
         blog = Blog(author=self.email,
                     title=title,
                     description=description,
-                    author_id=self._id)
+                    author_id=self.identity)
 
         blog.save_to_mongo()
 
     def json(self):
         return {
             "email": self.email,
-            "_id": self._id,
+            "identity": self.identity,
             "password": self.password
         }
 

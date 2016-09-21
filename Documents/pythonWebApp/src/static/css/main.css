@@ -1,13 +1,8 @@
 #submit-form {
-    position: absolute;
     margin-top: 50px;
     left: 50%;
-    top: 50%;
 }
 
 .form-group {
-    position: absolute;
-    max-width: 240px;
-    left: 50%;
-    top: 50%;
+    max-width: 360px;
 }

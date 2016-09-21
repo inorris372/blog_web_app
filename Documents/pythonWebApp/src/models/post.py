@@ -9,17 +9,18 @@ __author__ = 'Ian'
 
 class Post(object):
 
-    def __init__(self, blog_id, title, content, author, created_date=datetime.datetime.utcnow(), _id=None):
+    def __init__(self, blog_id, title, content, author, created_date=datetime.datetime.utcnow(), identity=None):
         self.blog_id = blog_id
         self.title = title
         self.content = content
         self.author = author
-        self._id = uuid.uuid4().hex if _id is None else _id
+        self.identity = uuid.uuid4().hex if identity is None else identity
         self.created_date = created_date
 
     def save_to_mongo(self):
         Database.insert(collection='posts',
                         data=self.json())
+
     @staticmethod
     def new_post(blog_id, title, content, date=datetime.datetime.utcnow()):
         blog = src.models.blog.Blog.from_mongo(blog_id)
@@ -29,7 +30,7 @@ class Post(object):
 
     def json(self):
         return {
-            '_id': self._id,
+            'identity': self.identity,
             'blog_id': self.blog_id,
             'author': self.author,
             'content': self.content,
@@ -38,10 +39,10 @@ class Post(object):
         }
 
     @classmethod
-    def from_mongo(cls, _id):
-        post_data = Database.find_one(collection='posts', query={'_id': _id})
+    def from_mongo(cls, identity):
+        post_data = Database.find_one(collection='posts', query={'identity': identity})
         return cls(**post_data)
 
     @staticmethod
-    def from_blog(_id):
-        return [post for post in Database.find(collection='posts', query={'blog_id':_id})]
+    def from_blog(identity):
+        return [post for post in Database.find(collection='posts', query={'blog_id': identity})]

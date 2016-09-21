@@ -7,15 +7,15 @@ __author__ = 'Ian'
 
 
 class Blog(object):
-    def __init__(self, author, author_id, title, description, _id=None):
+    def __init__(self, author, author_id, title, description, identity=None):
         self.author = author
         self.title = title
         self.description = description
-        self._id = uuid.uuid4().hex if _id is None else _id
+        self.identity = uuid.uuid4().hex if identity is None else identity
         self.author_id = author_id
 
     def new_post(self, title, content, date=datetime.datetime.utcnow()):
-        post = Post(blog_id=self._id,
+        post = Post(blog_id=self.identity,
                title=title,
                content=content,
                author =self.author,
@@ -23,7 +23,7 @@ class Blog(object):
         post.save_to_mongo()
 
     def get_posts(self):
-        return Post.from_blog(self._id)
+        return Post.from_blog(self.identity)
 
     def save_to_mongo(self):
         Database.insert(collection='blogs',
@@ -34,13 +34,13 @@ class Blog(object):
             'author': self.author,
             'title': self.title,
             'description': self.description,
-            'id': self._id
+            'identity': self.identity
         }
 
     @classmethod
-    def from_mongo(cls, _id):
+    def from_mongo(cls, identity):
         blog_data = Database.find_one(collection='blogs',
-                                      query={'_id': _id})
+                                      query={'identity': identity})
         return cls(**blog_data)
 
     @classmethod
