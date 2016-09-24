@@ -27,7 +27,8 @@ class Menu(object):
         description = input("Enter blog description: ")
         blog = Blog(author=self.user,
                     title=title,
-                    description=description)
+                    description=description,
+                    author_id=self.user.identity)
         blog.save_to_mongo()
         self.user_blog = blog
 

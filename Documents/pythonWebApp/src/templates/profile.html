@@ -1,4 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Hello {{ email }}</h1>
+<div class="container page-form" >
+    <form id="submit-form"  method="post">
+        <h1>Hello {{ email }}</h1>
+        <div class="form-group">
+            <a href="/blogs"><button type="button" id="login" class="btn btn-primary">Create Blog</button></a>
+        </div>
+    </form>
+</div>
 {% endblock %}
